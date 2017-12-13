@@ -3,7 +3,7 @@ body {
     background-color:#888888;
     margin: 10px;
     height: 100%;
-    width: 900px;
+    /*width: 900px;*/
     overflow-x: hidden;
     overflow-y: auto;
     border: dashed;
@@ -11,8 +11,43 @@ body {
 
 .reactMade {
   background-color:#bbbbbb;
-  border-color: green;
   border: solid;
   width:100%;
   height:100%;
+}
+
+.Matrix {
+  border: solid;
+  border-color: red;
+
+  margin: 10px;
+  width: fit-content;
+}
+
+.Row{
+  border: solid;
+  border-color: orange;
+
+  width: fit-content;
+}
+
+.MatrixSquare, .numberInput {
+  border-color: yellow;
+  width:80px;
+  height:30px;
+
+  text-align: center;
+}
+
+.numberInput {
+  background-color: #bbbbbb;
+  transition: 0.1s;
+}
+.numberInput:focus {
+  background-color: #aaaaaa;
+}
+
+.numberInput:disabled {
+  border-color: #999900;
+  background-color: #dddddd;
 }
