@@ -12,14 +12,22 @@ body {
 .reactMade {
   background-color:#bbbbbb;
   border: solid;
-  width:100%;
+  width:fit-content;
+  padding-right: 10px;
+  padding-left: 10px;
   height:100%;
+}
+
+.InputControls {
+  border: solid;
+  border-color: green;
+  margin: 10px;
+  width: fit-content;
 }
 
 .Matrix {
   border: solid;
   border-color: red;
-
   margin: 10px;
   width: fit-content;
 }
