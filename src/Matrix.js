@@ -3,7 +3,7 @@ import React from 'react';
 class Matrix extends React.Component {
   changeMatrix = (value, row, col) => {
     //console.log(`Just changed (${row}, ${col}).`);
-    this.props.alterRecordedValues(value, row, col);
+    this.props.alterCell(value, row, col);
   }
 
   render() {
@@ -14,12 +14,18 @@ class Matrix extends React.Component {
         <Row
           key={row}
           index={row}
+          displayOnly={this.props.displayOnly}
           values={myValues[row]}
           alterMatrix={this.changeMatrix}
         />
       );
     }
-    return (<div className="Matrix">{myMatrix}</div>);
+    return (
+      <div className="Matrix">
+        <div>{this.props.message}</div>
+        <div>{myMatrix}</div>
+      </div>
+    );
   }
 }
 
@@ -36,6 +42,7 @@ class Row extends React.Component{
         <Square
           key={col}
           index={col}
+          displayOnly={this.props.displayOnly}
           value={myValues[col]}
           alterRow={this.changeRow}
         />
@@ -52,11 +59,17 @@ class Square extends React.Component{
   }
 
   render() {
+    var className="Cell"
+    console.log(this.changeSquare)
+    if (true) {
+      className += " input"
+    }
     return (
       <input
-        className="numberInput"
+        className={className}
         type="text"
         value={this.props.value}
+        disabled={this.props.displayOnly}
         onChange={this.changeSquare}
       />
     );
