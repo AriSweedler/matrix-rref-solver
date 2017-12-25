@@ -33,14 +33,16 @@ body {
 }
 
 .input {
-  background-color: var(--cell-color);
+  background-color: #bbbbbb;
   transition: 0.1s;
 }
+
 .input:focus {
-  background-color: var(--input-color);
+  background-color: #aaaaaa;
 }
 
 .input:disabled {
-  text-color: var(--text-color);
+  color: black;
+  background-color: #bbbbbb;
 }
 

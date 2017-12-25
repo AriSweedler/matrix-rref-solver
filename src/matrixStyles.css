@@ -1,0 +1,34 @@
+.Matrix{
+  border: solid;
+  border-color: red;
+  padding :10px;
+  margin: 10px;
+  width: fit-content;
+}
+
+.Row{
+  border: solid;
+  border-color: orange;
+  width: fit-content;
+}
+
+.Cell{
+  border: solid;
+  border-color: yellow;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+}
+
+.userInput, .answer{
+  border: solid;
+  border-color: green;
+  padding: 10px;
+}
+
+.shownWork, .ioPanel{
+  border: solid;
+  border-color: blue;
+  padding: 10px;
+  margin: 10px;
+}

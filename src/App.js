@@ -115,7 +115,7 @@ class App extends React.Component {
 
     return (
       <div className="myApp">myApp
-        <div className="cockpit">cockpit
+        <div className="ioPanel">ioPanel
           <div className="userInput">userInput
             <InputControls
               className="inputControls"
