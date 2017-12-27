@@ -4,7 +4,7 @@ import InputControls from './InputControls.js'
 
 import './matrixStyles.css';
 
-function copyMatrixValues(input) {
+function deepCopyMatrixValues(input) {
   var output = [];
   for (let arr of input) {
     output.push(arr.slice())
@@ -15,7 +15,7 @@ function copyMatrixValues(input) {
 class App extends React.Component {
   state = {
     allValues: [[2, 6, 4], [1, 4, 5], [2, 7, 5]],
-    rows: 1,
+    rows: 3,
     cols: 3
   }
 
@@ -23,7 +23,7 @@ class App extends React.Component {
   matrixSizeChange = (newRows, newCols) => {
     if(newRows === 0 || newCols === 0) {
       console.log("Too little")
-      return;
+      //return;
     }
 
     var curRows = this.state.allValues.length;
@@ -54,7 +54,7 @@ class App extends React.Component {
   }
 
   //Change a number in allValues
-  changeCell = (value, row, col) => {
+  changeCellValue = (value, row, col) => {
     var newValues = this.state.allValues.slice();
     newValues[row][col] = value;
     this.setState({
@@ -62,41 +62,58 @@ class App extends React.Component {
     });
   }
 
-  doNothing = () => {}
+  addWork = (description, values) => {
+    this.shownWork.push(
+      <Matrix
+        key={this.workStep++}
+        displayOnly={true}
+        message={`Step ${this.workStep}: ${description}`}
+        values={values}
+      />);
+  }
 
-  //return an array of Matricies, each step is a piece of work. Also, pushes the final values/2D-array onto finalAnswerPtr.
-  rref = (input, finalAnswerPtr) => {
-    //divide topmost alive row by itself, subtract from other rows.
-    //repeat.
-    var myKey = 0;
-    var shownWork = [];
-    var nextStep = copyMatrixValues(input);
-    var thisWork;
-    for(let i = 0; i < this.state.rows; i++) {
-      //do a step of work on the matrix "nextStep"
-      let rVal = nextStep[i][i];
-      for(let c = i; c < this.state.cols; c++) {
-        nextStep[i][c] /= rVal;
+  //takes a matrix as input, and retuns the matrix in rref'd form. (All lines beginning in 'this.*' are for the purpose of recording work.)
+  rref = (input) => {
+    let col = 0;
+    let row = 0;
+    let nextStep = [];
+    this.workStep = 0;
+    this.shownWork = [];
+    nextStep = deepCopyMatrixValues(input);
+    for(row = 0; row < this.state.rows; col++, row++) {
+
+      //do a step of work on the matrix "nextStep", then record.
+      let rVal = nextStep[row][col];
+      while (rVal === 0) {
+        col++;
+        rVal = nextStep[row][col];
+        if (col === this.state.cols) {return;}
       }
-      //and place a deep copy of the results of this step into a matrix.
-      thisWork = copyMatrixValues(nextStep);
-      shownWork.push(<Matrix key={myKey++} displayOnly={true} message={`Step ${myKey}: Divide row ${i} by ${rVal}.`} values={thisWork}/>);
+      if (rVal !== 1 && rVal) {
+        nextStep[row] = nextStep[row].map( (item) => (item /= rVal));
+        this.addWork(`Divide row ${row} by ${rVal}.`, deepCopyMatrixValues(nextStep));
+      }
 
       //do a step of work on the matrix "nextStep"
-      for(let r = i+1; r < this.state.rows; r++) {
-        let rVal = nextStep[r][i];
-        for(let c = 0; c < this.state.cols; c++) {
-          nextStep[r][c] -= rVal*nextStep[i][c];
+      for(let r = row+1; r < this.state.rows; r++) {
+        let rVal = nextStep[r][col];
+        if (rVal) {
+          // eslint-disable-next-line
+          nextStep[r] = nextStep[r].map( (item, c) => (item -= nextStep[row][c]*rVal));
+          this.addWork(`Subtract ${rVal}*(row ${row}) from row ${r} in order to zero out (${r}, ${col}).`, deepCopyMatrixValues(nextStep));
         }
       }
 
-      //and place a deep copy of the results of this step into a matrix.
-      thisWork = copyMatrixValues(nextStep);
-      shownWork.push(<Matrix key={myKey++} displayOnly={true} message={`Step ${myKey}: subtract row ${i} from all rows below it.`} values={thisWork}/>);
     }
 
-    finalAnswerPtr.push(copyMatrixValues(nextStep));//treating this as
-    return shownWork;
+    return nextStep;
+  }
+
+  zeroAll = () => {
+    console.log("Zero all")
+    const zeroVals = Array(this.state.rows).fill(Array(this.state.cols).fill(0));
+    console.log(zeroVals);
+    this.setState({allValues: zeroVals})
   }
 
   render() {
@@ -109,9 +126,7 @@ class App extends React.Component {
     }
 
     //rref, and record both work & answer.
-    var finalAnswerPtr = [];
-    var shownWork = this.rref(values, finalAnswerPtr);
-    var finalAnswer = finalAnswerPtr.pop();
+    var finalAnswer = this.rref(values);
 
     return (
       <div className="myApp">myApp
@@ -120,10 +135,11 @@ class App extends React.Component {
             <InputControls
               className="inputControls"
               controlsUsed={this.matrixSizeChange}
+              zeroAll={this.zeroAll}
               rows={this.state.rows}
               cols={this.state.cols}/>
             <Matrix
-              alterCell={this.changeCell}
+              alterCell={this.changeCellValue}
               message={'Place your input here:'}
               values={values}/>
           </div>
@@ -135,7 +151,7 @@ class App extends React.Component {
           </div>
         </div>
         <div className="shownWork">
-          shownWork{shownWork}
+          shownWork{this.shownWork}
         </div>
       </div>
     );

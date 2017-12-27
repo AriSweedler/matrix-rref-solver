@@ -18,6 +18,21 @@
   width: 80px;
   height: 30px;
   text-align: center;
+  background-color: #bbbbbb;
+  transition: 0.1s;
+}
+
+.Cell:focus {
+  background-color: #aaaaaa;
+}
+
+.Cell:disabled {
+  color: black;
+  background-color: #bbbbd5;
+}
+
+.NaN, .NaN:focus {
+  background-color: #aa2222;
 }
 
 .userInput, .answer{

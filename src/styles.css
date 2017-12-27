@@ -32,17 +32,3 @@ body {
   width: fit-content;
 }
 
-.input {
-  background-color: #bbbbbb;
-  transition: 0.1s;
-}
-
-.input:focus {
-  background-color: #aaaaaa;
-}
-
-.input:disabled {
-  color: black;
-  background-color: #bbbbbb;
-}
-

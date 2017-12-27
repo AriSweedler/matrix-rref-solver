@@ -2,7 +2,6 @@ import React from 'react';
 
 class Matrix extends React.Component {
   changeMatrix = (value, row, col) => {
-    //console.log(`Just changed (${row}, ${col}).`);
     this.props.alterCell(value, row, col);
   }
 
@@ -60,9 +59,8 @@ class Square extends React.Component{
 
   render() {
     var className="Cell"
-    console.log(this.changeSquare)
-    if (true) {
-      className += " input"
+    if (isNaN(this.props.value)) {
+      className += " NaN"
     }
     return (
       <input
