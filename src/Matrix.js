@@ -16,6 +16,7 @@ class Matrix extends React.Component {
           displayOnly={this.props.displayOnly}
           values={myValues[row]}
           alterMatrix={this.changeMatrix}
+          changed={this.props.changed===row}
         />
       );
     }
@@ -44,10 +45,15 @@ class Row extends React.Component{
           displayOnly={this.props.displayOnly}
           value={myValues[col]}
           alterRow={this.changeRow}
+          changed={this.props.changed}
         />
       );
     }
-    return (<div className="Row">{myRow}</div>);
+    let className = "Row";
+    if (this.props.changed) {
+      className += " changed";
+    }
+    return (<div className={className}>{myRow}</div>);
   }
 
 }
@@ -58,9 +64,12 @@ class Square extends React.Component{
   }
 
   render() {
-    var className="Cell"
+    var className="Cell";
     if (isNaN(this.props.value)) {
-      className += " NaN"
+      className += " NaN";
+    }
+    if (this.props.changed) {
+      className += " changed";
     }
     return (
       <input

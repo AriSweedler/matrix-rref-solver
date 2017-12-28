@@ -17,6 +17,7 @@
   border-color: yellow;
   width: 80px;
   height: 30px;
+  font-size: 20px;
   text-align: center;
   background-color: #bbbbbb;
   transition: 0.1s;
@@ -26,6 +27,10 @@
   background-color: #aaaaaa;
 }
 
+.Cell:hover {
+  background-color: #cccccc;
+}
+
 .Cell:disabled {
   color: black;
   background-color: #bbbbd5;
@@ -33,6 +38,10 @@
 
 .NaN, .NaN:focus {
   background-color: #aa2222;
+}
+
+.changed:disabled {
+  color: blue;
 }
 
 .userInput, .answer{

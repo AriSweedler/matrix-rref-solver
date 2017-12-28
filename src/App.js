@@ -14,38 +14,30 @@ function deepCopyMatrixValues(input) {
 
 class App extends React.Component {
   state = {
-    allValues: [[2, 6, 4], [1, 4, 5], [2, 7, 5]],
+    allValues: [[2, 6, 4], [2, 8, 10], [2, 7, 5]],
     rows: 3,
     cols: 3
   }
 
   //Changes the state of the rows/cols. Pushes numbers onto allValues if necesary.
   matrixSizeChange = (newRows, newCols) => {
-    if(newRows === 0 || newCols === 0) {
-      console.log("Too little")
-      //return;
-    }
+    //if(newRows === 0 || newCols === 0) {}
 
-    var curRows = this.state.allValues.length;
-    var curCols = this.state.allValues[0].length;
-    var newValues = this.state.allValues.slice();
+    var newValues = deepCopyMatrixValues(this.state.allValues);
 
     //if we added rows, then push a row filled with 0s to the end of this.state.allValues
-    if (newRows > curRows) {
-      for(let r = curRows; r <= newRows; r++) {
-        newValues.push(Array(curCols).fill(0)); // [0, 0, 0, 0] if curCols = 4
-      }
+    while (newRows > newValues.length) {
+      newValues.push(Array(newCols).fill(0)); // [0, 0, 0, 0] if newCols = 4
     }
 
     //if we added cols, then:
     //For each row: Push enough 0s to the end.
-    if (newCols > this.state.allValues[0].length) {
-      for(let r = 0; r < curRows; r++) {
-        for(let c = curCols; c <= newCols; c++) {
-          newValues[r].push(0);
-        }
+    for(let r = 0; r < newRows; r++) {
+      while (newCols > newValues[r].length) {
+        newValues[r].push(0);
       }
     }
+
     this.setState({
       rows: newRows,
       cols: newCols,
@@ -62,57 +54,61 @@ class App extends React.Component {
     });
   }
 
-  addWork = (description, values) => {
+  addWork = (description, changedRow) => {
     this.shownWork.push(
       <Matrix
+        message={`Step ${this.workStep}: ${description}`}
         key={this.workStep++}
         displayOnly={true}
-        message={`Step ${this.workStep}: ${description}`}
-        values={values}
-      />);
+        values={deepCopyMatrixValues(this.nextStep)}
+        changed={changedRow}
+      />
+    );
+    // console.log(`Step ${this.workStep++}: ${description.substring(0, 19)}\t...${values}.`)
   }
 
   //takes a matrix as input, and retuns the matrix in rref'd form. (All lines beginning in 'this.*' are for the purpose of recording work.)
   rref = (input) => {
     let col = 0;
     let row = 0;
-    let nextStep = [];
     this.workStep = 0;
     this.shownWork = [];
-    nextStep = deepCopyMatrixValues(input);
+    this.nextStep = deepCopyMatrixValues(input);
+    this.addWork(`Here is our original matrix.`, );
     for(row = 0; row < this.state.rows; col++, row++) {
 
-      //do a step of work on the matrix "nextStep", then record.
-      let rVal = nextStep[row][col];
+      //do a step of work on the matrix "this.nextStep", then record.
+      let rVal = this.nextStep[row][col];
       while (rVal === 0) {
         col++;
-        rVal = nextStep[row][col];
-        if (col === this.state.cols) {return;}
+        rVal = this.nextStep[row][col];
+        if (col === this.state.cols) {break;}
       }
       if (rVal !== 1 && rVal) {
-        nextStep[row] = nextStep[row].map( (item) => (item /= rVal));
-        this.addWork(`Divide row ${row} by ${rVal}.`, deepCopyMatrixValues(nextStep));
+        this.nextStep[row] = this.nextStep[row].map( (item) => (item /= rVal));
+        this.addWork(`Divide row ${row} by ${rVal}.`, row);
       }
 
-      //do a step of work on the matrix "nextStep"
+      //do a step of work on the matrix "this.nextStep"
       for(let r = row+1; r < this.state.rows; r++) {
-        let rVal = nextStep[r][col];
+        let rVal = this.nextStep[r][col];
         if (rVal) {
           // eslint-disable-next-line
-          nextStep[r] = nextStep[r].map( (item, c) => (item -= nextStep[row][c]*rVal));
-          this.addWork(`Subtract ${rVal}*(row ${row}) from row ${r} in order to zero out (${r}, ${col}).`, deepCopyMatrixValues(nextStep));
+          this.nextStep[r] = this.nextStep[r].map( (item, c) => (item -= this.nextStep[row][c]*rVal));
+          this.addWork(`Subtract ${rVal}*(row ${row}) from row ${r} in order to zero out (${r}, ${col}).`, r);
         }
       }
-
     }
 
-    return nextStep;
+    return this.nextStep;
   }
 
   zeroAll = () => {
-    console.log("Zero all")
-    const zeroVals = Array(this.state.rows).fill(Array(this.state.cols).fill(0));
-    console.log(zeroVals);
+    const zeroRow = Array(this.state.cols).fill(0);
+    let zeroVals = [];
+    for(let i = 0; i < this.state.rows; i++) {
+      zeroVals.push(zeroRow.slice());
+    }
     this.setState({allValues: zeroVals})
   }
 
@@ -127,7 +123,6 @@ class App extends React.Component {
 
     //rref, and record both work & answer.
     var finalAnswer = this.rref(values);
-
     return (
       <div className="myApp">myApp
         <div className="ioPanel">ioPanel
