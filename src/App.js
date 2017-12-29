@@ -14,7 +14,7 @@ function deepCopyMatrixValues(input) {
 
 class App extends React.Component {
   state = {
-    allValues: [[2, 6, 4], [2, 8, 10], [2, 7, 5]],
+    allValues: [[2, 6, 4], [1, 4, 5], [3, 7, 5]],
     rows: 3,
     cols: 3
   }

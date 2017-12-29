@@ -1,3 +1,11 @@
+/*Variable declarations*/
+.Matrix{
+  --bg-color: #bbbbbb;
+  --bg-color-focus: #aaaaaa;
+  --bg-color-hover: #cccccc;
+  --bg-color-NaN: #aa2222;
+}
+
 .Matrix{
   border: solid;
   border-color: red;
@@ -19,25 +27,20 @@
   height: 30px;
   font-size: 20px;
   text-align: center;
-  background-color: #bbbbbb;
+  background-color: var(--bg-color);
   transition: 0.1s;
 }
 
 .Cell:focus {
-  background-color: #aaaaaa;
-}
-
-.Cell:hover {
-  background-color: #cccccc;
+  background-color: var(--bg-color-focus);
 }
 
 .Cell:disabled {
   color: black;
-  background-color: #bbbbd5;
 }
 
 .NaN, .NaN:focus {
-  background-color: #aa2222;
+  background-color: var(--bg-color-NaN);
 }
 
 .changed:disabled {
