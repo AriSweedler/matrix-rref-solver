@@ -2,12 +2,12 @@ import React from 'react';
 
 class InputControls extends React.Component {
   decrementRow = () => {
-    console.log("Row minus");
+    //console.log("Row minus");
     this.props.controlsUsed(this.props.rows-1, this.props.cols);
   }
 
   incrementRow = () => {
-    console.log("Row plus");
+    //console.log("Row plus");
     this.props.controlsUsed(this.props.rows+1, this.props.cols);
   }
 
@@ -17,12 +17,12 @@ class InputControls extends React.Component {
   }
 
   decrementCol = () => {
-    console.log("Col minus");
+    //console.log("Col minus");
     this.props.controlsUsed(this.props.rows, this.props.cols-1);
   }
 
   incrementCol = () => {
-    console.log("Col plus");
+    //console.log("Col plus");
     this.props.controlsUsed(this.props.rows, this.props.cols+1);
   }
 
