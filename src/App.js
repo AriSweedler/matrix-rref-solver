@@ -1,10 +1,10 @@
 import React from 'react';
 import Matrix from './Matrix.js';
-import InputControls from './InputControls.js'
-
+import InputControls from './InputControls.js';
 import './matrixStyles.css';
 
-function deepCopyMatrixValues(input) {
+//we don't want no references here
+function cloneMatrix(input) {
   var output = [];
   for (let arr of input) {
     output.push(arr.slice())
@@ -13,6 +13,7 @@ function deepCopyMatrixValues(input) {
 }
 
 class App extends React.Component {
+  //hoist state to the App component
   state = {
     allValues: [[2, 6, 4], [1, 4, 5], [3, 7, 5]],
     rows: 3,
@@ -21,11 +22,9 @@ class App extends React.Component {
 
   //Changes the state of the rows/cols. Pushes numbers onto allValues if necesary.
   matrixSizeChange = (newRows, newCols) => {
-    //if(newRows === 0 || newCols === 0) {}
+    var newValues = cloneMatrix(this.state.allValues);
 
-    var newValues = deepCopyMatrixValues(this.state.allValues);
-
-    //if we added rows, then push a row filled with 0s to the end of this.state.allValues
+    //if we added rows, then push enough rows filled with 0s to the end of this.state.allValues
     while (newRows > newValues.length) {
       newValues.push(Array(newCols).fill(0)); // [0, 0, 0, 0] if newCols = 4
     }
@@ -38,6 +37,7 @@ class App extends React.Component {
       }
     }
 
+    //update state
     this.setState({
       rows: newRows,
       cols: newCols,
@@ -60,7 +60,7 @@ class App extends React.Component {
         message={`Step ${this.workStep}: ${description}`}
         key={this.workStep++}
         displayOnly={true}
-        values={deepCopyMatrixValues(this.nextStep)}
+        values={cloneMatrix(this.nextStep)}
         changed={changedRow}
       />
     );
@@ -73,7 +73,7 @@ class App extends React.Component {
     let row = 0;
     this.workStep = 0;
     this.shownWork = [];
-    this.nextStep = deepCopyMatrixValues(input);
+    this.nextStep = cloneMatrix(input);
     this.addWork(`Here is our original matrix.`, );
     for(row = 0; row < this.state.rows; col++, row++) {
 
@@ -146,7 +146,7 @@ class App extends React.Component {
           </div>
         </div>
         <div className="shownWork">
-          shownWork{this.shownWork}
+          Shown Work:{this.shownWork}
         </div>
       </div>
     );
