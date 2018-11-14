@@ -2,7 +2,7 @@
   "name": "rref-solver-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://arisweedler.github.io/matrix-rref-solver",
+  "homepage": "http://matrix-rref-solver.js.org/",
   "dependencies": {
     "mathjs": "^5.0.3",
     "react": "^16.3.2",
