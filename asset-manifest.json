@@ -1,6 +1,13 @@
 {
-  "main.css": "static/css/main.78f858a2.css",
-  "main.css.map": "static/css/main.78f858a2.css.map",
-  "main.js": "static/js/main.543395a4.js",
-  "main.js.map": "static/js/main.543395a4.js.map"
+  "main.css": "/matrix-rref-solver/static/css/main.a2c4c6ff.chunk.css",
+  "main.js": "/matrix-rref-solver/static/js/main.ca57fd63.chunk.js",
+  "main.js.map": "/matrix-rref-solver/static/js/main.ca57fd63.chunk.js.map",
+  "static/js/1.2d550128.chunk.js": "/matrix-rref-solver/static/js/1.2d550128.chunk.js",
+  "static/js/1.2d550128.chunk.js.map": "/matrix-rref-solver/static/js/1.2d550128.chunk.js.map",
+  "runtime~main.js": "/matrix-rref-solver/static/js/runtime~main.93b6aaad.js",
+  "runtime~main.js.map": "/matrix-rref-solver/static/js/runtime~main.93b6aaad.js.map",
+  "static/css/main.a2c4c6ff.chunk.css.map": "/matrix-rref-solver/static/css/main.a2c4c6ff.chunk.css.map",
+  "index.html": "/matrix-rref-solver/index.html",
+  "precache-manifest.44c0f63cfbef5909130ac44cd09f752b.js": "/matrix-rref-solver/precache-manifest.44c0f63cfbef5909130ac44cd09f752b.js",
+  "service-worker.js": "/matrix-rref-solver/service-worker.js"
 }
